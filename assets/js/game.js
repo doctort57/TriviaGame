@@ -19,8 +19,11 @@ $(document).ready(function() {
 			}
 			else {
 				index++;
-				answerWrong();
+				answerTimeout();
+
 				countdownTimer.reset();
+    			msgDelay() ;	
+	
 				if (index < questionArray.length) {
 					loadQuestion(index);
 				} else {
@@ -30,7 +33,6 @@ $(document).ready(function() {
 			}
 		}
 	};
-
 
 	var trivia = {
 		questions: ['What is the very first word Vito Corleone says in the film?',
@@ -87,6 +89,8 @@ $(document).ready(function() {
 
 var correct = 0;
 var wrong = 0;
+var answerChosen = "";
+
 var q1 = {
 	question : 'What is the very first word Vito Corleone says in the film?',
 	possibleAnswers : ['A. Give...',
@@ -105,7 +109,7 @@ var q2 = {
 				 'C. $15,000',
 				 'D. $5,000 to start with'],
 	flags : [false, true, false, false],
-	answer : 'B. Narcotics',
+	answer : 'B. $50,000',
 	image : "assets/images/Luca.jpg"
 };
 
@@ -127,7 +131,7 @@ var q4 = {
 				 'C. Don Francesco in L.A.',
 				 'D. Don Cici in Las Vegas'],
 	flags : [false, false, true, false],
-	answer : 'D. All of the above',
+	answer : 'C. Don Francesco in L.A.',
 	image : "assets/images/Fredo.jpg"
 };
 
@@ -138,7 +142,7 @@ var q5 = {
 				 'C. 10',
 				 'D. 9'],
 	flags : [false, false, false, true],
-	answer : 'B. Carlo',
+	answer : 'D. 9',
 	image : "assets/images/Gunshots.jpg"
 };
 
@@ -218,6 +222,8 @@ function setup() {
 	$('.question').append('<button id="startButton">Start</button>');
 	$('#startButton').on('click', function() {
 		$(this).hide();
+		correct = 0;
+		wrong = 0;
 		countdownTimer.start();
 	 	loadQuestion(index);
 	});
@@ -227,9 +233,7 @@ function getAnswer() {
 
 //  nextQuestion();
 	$('.answerchoice').on('click', function() {
-	  console.log('alert', index);
 		index++;
-		console.log('click', index);
 		$(".question").text('');
 		$("#buttonA").text('');
 		$("#buttonB").text('');
@@ -241,8 +245,10 @@ function getAnswer() {
 
 function answerCorrect() {
 	correct++;
+	$('#button'+answerChosen).css('background-color', 'green');
 	bootbox.alert({
-    message: "Correct Answer",
+    message: "Correct Answer " + questionArray[index].answer,
+    timeOut : 2000,
     className: 'rightMsg',
     buttons: {
       ok: {
@@ -250,14 +256,19 @@ function answerCorrect() {
         className: 'msgBtn' 
       }
      }
-});
-
+}); 
+	msgDelay() ;	
 }
 
 function answerWrong() {
 	wrong++;
+	$('#button'+answerChosen).css('background-color', 'red');
+	var a = questionArray[index].flags.indexOf(true);
+	var b = questionArray[index].possibleAnswers[a].charAt(0);
+	$('#button'+b).css('background-color', 'green');
 	bootbox.alert({
-    message: "Wrong Answer",
+    message: "Wrong Answer, Correct Answer is " + questionArray[index].answer,
+    timeOut : 2000,
     className: 'wrongMsg',
     buttons: {
       ok: {
@@ -266,7 +277,34 @@ function answerWrong() {
       }
      }
 });
+	msgDelay() ;	
 }
+
+function answerTimeout() {
+	wrong++;
+	$('#button'+answerChosen).css('background-color', 'red');
+	bootbox.alert({
+    message: "Times Up, Correct Answer is " + questionArray[index].answer,
+    timeOut : 2000,
+    className: 'wrongMsg',
+    buttons: {
+      ok: {
+        label: 'Next Question',
+        className: 'msgBtn' 
+      }
+     }
+});
+	msgDelay() ;	
+}
+
+function msgDelay() {
+	window.setTimeout(function(){
+    	bootbox.hideAll();
+	}, 03000
+	);
+}	
+
+
 
 function showScore() {
 	$(".image").empty();
@@ -281,9 +319,9 @@ function showScore() {
 
 setup();
 $('.answerchoice').on('click', function() {
- console.log($(this));
+
  if(this.id == 'buttonA') {
- 	var answerChosen = 'A';
+ 	answerChosen = 'A';
  } else if(this.id == 'buttonB') {
  	answerChosen = 'B';
  } else if (this.id == 'buttonC') {
@@ -293,46 +331,39 @@ $('.answerchoice').on('click', function() {
  } 
  if ((answerChosen == 'A') && (questionArray[index].flags[0] == true)) {
  	answerCorrect();
+ 
  } else if (answerChosen == 'A') {
-   	answerWrong();
-  }
+ 	answerWrong();
+ }
  if ((answerChosen == 'B') && (questionArray[index].flags[1] == true)) {
-  	answerCorrect();
+ 	answerCorrect();
  } else if (answerChosen == 'B') {
-  	answerWrong();
+ 	answerWrong();
  }
 if ((answerChosen == 'C') && (questionArray[index].flags[2] == true)) {
-  	answerCorrect();
+ 	answerCorrect();
  } else if (answerChosen == 'C') {
-   	answerWrong();
+ 	answerWrong();
  }
 if ((answerChosen == 'D') && (questionArray[index].flags[3] == true)) {
-  	answerCorrect();
+ 	answerCorrect();
  } else if (answerChosen == 'D') {
  	answerWrong();
  }
- if (correct + wrong < 10) {
- 	window.setTimeout(function(){
-    	bootbox.hideAll();
-	}, 01500);
- } else {
- 		bootbox.hideAll();
- }
-	
- $(".question").text('');
- $("#buttonA").text('');
- $("#buttonB").text('');
- $("#buttonC").text('');
- $("#buttonD").text('');
- index++;
- if (index < questionArray.length) {
- 	loadQuestion(index);
- } else {
- 	$(".answerchoice").hide();
- 	showScore();
- }
+
+ setTimeout(function() {
+	 $(".question").text('');
+	 $("#buttonA").text('').css('background-color', 'black');;
+	 $("#buttonB").text('').css('background-color', 'black');;
+	 $("#buttonC").text('').css('background-color', 'black');;
+	 $("#buttonD").text('').css('background-color', 'black');;
+	 index++;
+	 if (index < questionArray.length) {
+	 	loadQuestion(index);
+	 } else {
+	 	$(".answerchoice").hide();
+	 	showScore();
+	 }
+	 }, 1500);
 });
-
-
-//	$('#start').click(countdownTimer.start);
 });
