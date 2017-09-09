@@ -18,17 +18,18 @@ $(document).ready(function() {
 				$('.timer').html('<h3>' + countdownTimer.time + ' seconds remaining</h3>');
 			}
 			else {
-				index++;
 				answerTimeout();
-
+				index++;
 				countdownTimer.reset();
     			msgDelay() ;	
 	
 				if (index < questionArray.length) {
-					loadQuestion(index);
+					setTimeout(function() {
+						loadQuestion(index); }, 1500);
 				} else {
-					$(".answerchoice").hide();
-					showScore();
+					setTimeout(function() {
+						$(".answerchoice").hide();
+						showScore();}, 1500);
 				}
 			}
 		}
@@ -204,8 +205,7 @@ var q10 = {
 var questionArray = [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10];
 
 function loadQuestion(questionSelection) {
-	console.log(questionSelection);
-	countdownTimer.reset();
+  countdownTimer.reset();
   $(".question").html("<h4>" + questionArray[questionSelection].question + "</h4>");
   var charImage = $("<img alt='image' class='character-image'>").attr("src", questionArray[questionSelection].image);
   $(".image").empty();
@@ -282,7 +282,6 @@ function answerWrong() {
 
 function answerTimeout() {
 	wrong++;
-	$('#button'+answerChosen).css('background-color', 'red');
 	bootbox.alert({
     message: "Times Up, Correct Answer is " + questionArray[index].answer,
     timeOut : 2000,
