@@ -24,3 +24,5 @@ at the end of the game, displays total correct and incorrect answers
 
 ![image](https://user-images.githubusercontent.com/26799439/35920616-56af6040-0be6-11e8-9db2-503838fc72dc.png)
 
+![image](https://user-images.githubusercontent.com/26799439/35920686-829f4148-0be6-11e8-897a-4abbb255c4f8.png)
+
