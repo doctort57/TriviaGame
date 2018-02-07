@@ -2,10 +2,9 @@
 
 ## Overview
 
-A fun triva game celebrating one of my favorite movies using javascript, jquery and timer functions- I never get tired of watching this movie 
+A triva game celebrating one of the greatest movies ever using javascript, jquery and timer functions- I never get tired of watching this one
 
 Please check out the deployed version in Heroku [here](https://godfather.herokuapp.com/)!
-
 
 ## Functionality
 
@@ -13,11 +12,11 @@ Please check out the deployed version in Heroku [here](https://godfather.herokua
 
 Multiple choices for each question but  only allowed to pick one answer
 
-different image for each question
+different images for each question
 
 display Correct answer, Incorrect Answer or Times Up message
 
-at the end of the game, display total correct and incorrect answers
+at the end of the game, displays total correct and incorrect answers
 
 
 
