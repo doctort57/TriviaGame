@@ -1,0 +1,12 @@
+{
+  "name": "Godfather",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "build": "node scripts/build.js"
+  },
+  "author": "",
+  "license": "ISC",
+  
+}
